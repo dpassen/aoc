@@ -21,6 +21,3 @@
           unsorted (sequence parse-groups-xf input)
           sorted   (sort #(compare %2 %1) unsorted)]
       (transduce (take 3) + 0 sorted))))
-
-[(part-one)
- (part-two)]
