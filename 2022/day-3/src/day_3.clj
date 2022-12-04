@@ -8,13 +8,11 @@
   (map char (range (int start) (inc (int end)))))
 
 (def priorities
-  (merge
-   (zipmap
+  (zipmap
+   (concat
     (char-range \a \z)
-    (range 1 27))
-   (zipmap
-    (char-range \A \Z)
-    (range 27 53))))
+    (char-range \A \Z))
+   (range 1 53)))
 
 (defn- common-priorities
   [xs]
