@@ -32,12 +32,10 @@
 (defn- partially-contained?
   [[[a b] [x y]]]
   (or
-   (and
-    (>= b x)
-    (<= a y))
-   (and 
-    (<= a y)
-    (>= b x))))
+   (and (>= b x)
+        (<= a y))
+   (and (<= a y)
+        (>= b x))))
 
 (defn part-two
   []
