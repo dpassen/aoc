@@ -29,7 +29,7 @@
     (let [input (line-seq rdr)]
       (transduce (map (helper fully-contained?)) + 0 input))))
 
-(defn partially-contained?
+(defn- partially-contained?
   [[[a b] [x y]]]
   (or
    (and
