@@ -82,6 +82,3 @@
        ""
        (for [num (range (count final-board))]
          (last (get final-board (inc num))))))))
-
-[(part-one)
- (part-two)]
