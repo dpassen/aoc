@@ -8,7 +8,7 @@
        (partition-all length 1)
        (map-indexed vector)
        (some (fn [[idx chars]]
-               (when (= length (count (distinct chars)))
+               (when (apply distinct? chars)
                  (+ idx length))))))
 
 (defn part-1
