@@ -14,11 +14,11 @@
 (defn part-1
   []
   (with-open [rdr (io/reader (io/resource "./input.txt"))]
-    (let [input (line-seq rdr)]
-      (into [] (map #(distinct-subseq % 4)) input))))
+    (let [input (slurp rdr)]
+      (distinct-subseq input 4))))
 
 (defn part-2
   []
   (with-open [rdr (io/reader (io/resource "./input.txt"))]
-    (let [input (line-seq rdr)]
-      (into [] (map #(distinct-subseq % 14)) input))))
+    (let [input (slurp rdr)]
+      (distinct-subseq input 14))))
