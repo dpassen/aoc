@@ -84,6 +84,3 @@
               (<= required-size size)))
            (apply min-key second)
            second))))
-
-[(part-one)
- (part-two)]
