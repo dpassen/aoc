@@ -11,13 +11,13 @@
                (when (apply distinct? chars)
                  (+ idx length))))))
 
-(defn part-1
+(defn part-one
   []
   (with-open [rdr (io/reader (io/resource "./input.txt"))]
     (let [input (slurp rdr)]
       (distinct-subseq input 4))))
 
-(defn part-2
+(defn part-two
   []
   (with-open [rdr (io/reader (io/resource "./input.txt"))]
     (let [input (slurp rdr)]
