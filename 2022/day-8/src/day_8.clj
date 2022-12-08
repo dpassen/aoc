@@ -12,17 +12,22 @@
    (map #(map numeric-value %))
    (map vec)))
 
-(defn- visibilities
+(defn- with-neighbors
   [trees]
   (for [x    (range 1 (dec (count trees)))
         y    (range 1 (dec (count (get trees x))))
-        :let [tree (get-in trees [x y])
-              row (get trees x)
-              column (mapv #(nth % y) trees)
-              up (subvec column 0 x)
-              down(subvec column (inc x))
-              left (subvec row 0 y)
-              right (subvec row (inc y))]]
+        :let [row (get trees x)
+              column (mapv #(nth % y) trees)]]
+    {:tree  (get-in trees [x y])
+     :up    (rseq (subvec column 0 x))
+     :down  (subvec column (inc x))
+     :left  (rseq (subvec row 0 y))
+     :right (subvec row (inc y))}))
+
+(defn- visibilities
+  [trees]
+  (for [{:keys [tree up down left right]}
+        (with-neighbors trees)]
     (for [direction [up left right down]]
       (every? #(> tree %) direction))))
 
@@ -42,15 +47,8 @@
 
 (defn- distances
   [trees]
-  (for [x    (range 1 (dec (count trees)))
-        y    (range 1 (dec (count (get trees x))))
-        :let [tree (get-in trees [x y])
-              row (get trees x)
-              column (mapv #(nth % y) trees)
-              up (rseq (subvec column 0 x))
-              down (subvec column (inc x))
-              left (rseq (subvec row 0 y))
-              right (subvec row (inc y))]]
+  (for [{:keys [tree up down left right]}
+        (with-neighbors trees)]
     (for [direction [up left right down]]
       (count (take-until #(<= tree %) direction)))))
 
