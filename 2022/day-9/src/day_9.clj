@@ -21,42 +21,70 @@
     direction))
 
 (defn- move-head
-  [world step]
-  (update world :head (partial mapv + step)))
+  [knots step]
+  (update knots 0 (partial mapv + step)))
 
-(defn- move-tail
-  [{:keys [head tail] :as world}]
-  (let [[dx dy] (map - head tail)]
+(defn- move-knot
+  [head knot]
+  (let [[dx dy] (map - head knot)]
     (if (and (< (abs dx) 2)
              (< (abs dy) 2))
-      world
-      (cond-> world
+      knot
+      (cond-> knot
         (pos? dx)
-        (update-in [:tail 0] inc)
+        (update 0 inc)
 
         (neg? dx)
-        (update-in [:tail 0] dec)
+        (update 0 dec)
 
         (pos? dy)
-        (update-in [:tail 1] inc)
+        (update 1 inc)
 
         (neg? dy)
-        (update-in [:tail 1] dec)))))
+        (update 1 dec)))))
+
+(defn- move-knots
+  [knots]
+  (loop [head      (first knots)
+         knots     (rest knots)
+         new-knots (into [] [head])]
+    (if (seq knots)
+      (let [new-knot (move-knot head (first knots))]
+        (recur
+         new-knot
+         (rest knots)
+         (conj new-knots new-knot)))
+      new-knots)))
 
 (defn- move-rope
-  [world step]
-  (-> world
+  [knots step]
+  (-> knots
       (move-head step)
-      (move-tail)))
+      (move-knots)))
 
 (defn part-one
   []
   (with-open [rdr (io/reader (io/resource "./input.txt"))]
     (let [input (line-seq rdr)
           steps (sequence (comp (map parse-line) (mapcat normalize-number)) input)
-          world {:head [0 0] :tail [0 0]}]
+          world (into [] (repeat 2 [0 0]))]
       (count
        (into
         #{}
-        (map :tail)
+        (map peek)
         (reductions move-rope world steps))))))
+
+(defn part-two
+  []
+  (with-open [rdr (io/reader (io/resource "./input.txt"))]
+    (let [input (line-seq rdr)
+          steps (sequence (comp (map parse-line) (mapcat normalize-number)) input)
+          world (into [] (repeat 10 [0 0]))]
+      (count
+       (into
+        #{}
+        (map peek)
+        (reductions move-rope world steps))))))
+
+[(part-one)
+ (part-two)]
