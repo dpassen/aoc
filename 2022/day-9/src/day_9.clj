@@ -85,6 +85,3 @@
         #{}
         (map peek)
         (reductions move-rope world steps))))))
-
-[(part-one)
- (part-two)]
